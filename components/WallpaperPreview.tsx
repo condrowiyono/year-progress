@@ -8,12 +8,19 @@ export default function WallpaperPreview() {
   });
   const [width, setWidth] = useState(1170);
   const [height, setHeight] = useState(2532);
+  const [mode, setMode] = useState<"dot" | "horizontal">("dot");
 
   const previewUrl = `/api/wallpaper?width=${width}&height=${height}&timezone=${encodeURIComponent(
     timezone
-  )}`;
+  )}&mode=${mode}`;
 
   const presets = [
+    // iPhone 17 Series (2025)
+    { name: "iPhone 17 Pro Max", width: 1320, height: 2868 },
+    { name: "iPhone 17 Pro", width: 1206, height: 2622 },
+    { name: "iPhone Air", width: 1260, height: 2736 },
+    { name: "iPhone 17", width: 1206, height: 2622 },
+
     // iPhone 16 Series (2024)
     { name: "iPhone 16 Pro Max", width: 1320, height: 2868 },
     { name: "iPhone 16 Pro", width: 1206, height: 2622 },
@@ -40,18 +47,20 @@ export default function WallpaperPreview() {
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-4">Wallpaper Preview</h2>
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+      <h2 className="text-2xl font-bold mb-4 dark:text-gray-100">
+        Wallpaper Preview
+      </h2>
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Controls */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2 dark:text-gray-200">
               Device Preset
             </label>
             <select
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md"
               onChange={(e) => {
                 const preset = presets[parseInt(e.target.value)];
                 setWidth(preset.width);
@@ -67,41 +76,59 @@ export default function WallpaperPreview() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Width (px)</label>
+            <label className="block text-sm font-medium mb-2 dark:text-gray-200">
+              Visualization Mode
+            </label>
+            <select
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md"
+              value={mode}
+              onChange={(e) => setMode(e.target.value as "dot" | "horizontal")}
+            >
+              <option value="dot">Dot Grid</option>
+              <option value="horizontal">Horizontal Progress Bar</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2 dark:text-gray-200">
+              Width (px)
+            </label>
             <input
               type="number"
               value={width}
               onChange={(e) => setWidth(parseInt(e.target.value) || 1170)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md"
               min="100"
               max="5000"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2 dark:text-gray-200">
               Height (px)
             </label>
             <input
               type="number"
               value={height}
               onChange={(e) => setHeight(parseInt(e.target.value) || 2532)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md"
               min="100"
               max="5000"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Timezone</label>
+            <label className="block text-sm font-medium mb-2 dark:text-gray-200">
+              Timezone
+            </label>
             <input
               type="text"
               value={timezone}
               onChange={(e) => setTimezone(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md"
               placeholder="e.g., America/New_York"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Use IANA timezone format (e.g., America/New_York, Asia/Jakarta)
             </p>
           </div>
@@ -119,9 +146,9 @@ export default function WallpaperPreview() {
 
         {/* Preview */}
         <div className="flex flex-col items-center">
-          <p className="text-sm font-medium mb-2">Preview</p>
+          <p className="text-sm font-medium mb-2 dark:text-gray-200">Preview</p>
           <div
-            className="border border-gray-300 rounded-lg overflow-hidden"
+            className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden"
             style={{ maxWidth: "300px" }}
           >
             <img
@@ -130,9 +157,9 @@ export default function WallpaperPreview() {
               className="w-full h-auto"
             />
           </div>
-          <div className="mt-4 p-3 bg-gray-100 rounded text-xs font-mono break-all w-full">
-            <p className="font-semibold mb-1">API URL:</p>
-            <code>
+          <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono break-all w-full">
+            <p className="font-semibold mb-1 dark:text-gray-200">API URL:</p>
+            <code className="dark:text-gray-300">
               {typeof window !== "undefined" ? window.location.origin : ""}
               {previewUrl}
             </code>

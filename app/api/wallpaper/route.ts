@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateWallpaper } from '@/lib/wallpaper-generator';
+import { generateWallpaper, WallpaperMode } from '@/lib/wallpaper-generator';
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
     const width = parseInt(searchParams.get('width') || '1170', 10);
     const height = parseInt(searchParams.get('height') || '2532', 10);
     const timezone = searchParams.get('timezone') || 'UTC';
+    const mode = (searchParams.get('mode') || 'dot') as WallpaperMode;
 
     // Validate parameters
     if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) {
@@ -35,11 +36,20 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Validate mode
+    if (mode !== 'dot' && mode !== 'horizontal') {
+      return NextResponse.json(
+        { error: 'Invalid mode. Must be either "dot" or "horizontal".' },
+        { status: 400 }
+      );
+    }
+
     // Generate wallpaper
     const imageBuffer = await generateWallpaper({
       width,
       height,
       timezone,
+      mode,
     });
 
     // Return image with appropriate headers

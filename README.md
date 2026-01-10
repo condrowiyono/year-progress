@@ -67,18 +67,22 @@ GET /api/wallpaper
 | width     | number | 1170    | Width of the image in pixels (max 5000)         |
 | height    | number | 2532    | Height of the image in pixels (max 5000)        |
 | timezone  | string | UTC     | IANA timezone identifier (e.g., America/New_York)|
+| mode      | string | dot     | Visualization mode: "dot" or "horizontal"        |
 
 ### Example Requests
 
 ```bash
-# Default (iPhone 14 Pro, UTC)
+# Default (iPhone 14 Pro, UTC, dot mode)
 curl http://localhost:3000/api/wallpaper > wallpaper.png
 
 # Custom dimensions with timezone
 curl "http://localhost:3000/api/wallpaper?width=1290&height=2796&timezone=America/New_York" > wallpaper.png
 
-# Asia timezone
-curl "http://localhost:3000/api/wallpaper?width=1179&height=2556&timezone=Asia/Jakarta" > wallpaper.png
+# Horizontal progress bar mode
+curl "http://localhost:3000/api/wallpaper?width=1179&height=2556&timezone=Asia/Jakarta&mode=horizontal" > wallpaper.png
+
+# Dot grid mode (explicit)
+curl "http://localhost:3000/api/wallpaper?width=1179&height=2556&timezone=UTC&mode=dot" > wallpaper.png
 ```
 
 ## Apple Shortcuts Setup
@@ -125,12 +129,16 @@ wallpaper-engine/
    - Top safe area: 25% (for time/date display and widgets)
    - Bottom safe area: 12% (for camera/flashlight buttons)
    - Left/Right safe areas: 6% each (general margins)
-3. **Dot Grid Layout**: Calculates a continuous grid layout within safe areas based on image dimensions
-4. **Color Coding**:
-   - White dots: Past days (completed)
-   - Red dot: Today (current day)
-   - Gray dots: Future days (upcoming)
-5. **Image Generation**: Uses Sharp to render SVG to PNG with optimal performance
+3. **Visualization Modes**: Two display options available:
+   - **Dot Grid Mode** (default): Shows 365/366 dots representing each day of the year
+     - White dots: Past days (completed)
+     - Red dot: Today (current day)
+     - Gray dots: Future days (upcoming)
+   - **Horizontal Progress Bar Mode**: Minimalist progress bar design
+     - White border with black background
+     - White fill showing elapsed progress
+     - Percentage displayed in the center of the bar
+4. **Image Generation**: Uses Sharp to render SVG to PNG with optimal performance
 
 ## Customization
 

@@ -2,15 +2,33 @@ import sharp from "sharp";
 import { formatInTimeZone, toZonedTime } from "date-fns-tz";
 import { getDayOfYear, isLeapYear } from "date-fns";
 
+export type WallpaperMode = "dot" | "horizontal";
+
 export interface WallpaperOptions {
   width: number;
   height: number;
   timezone: string;
+  mode?: WallpaperMode;
 }
 
 export async function generateWallpaper(
   options: WallpaperOptions
 ): Promise<Buffer> {
+  const { width, height, timezone, mode = "dot" } = options;
+
+  // Route to appropriate generator based on mode
+  if (mode === "horizontal") {
+    return generateHorizontalProgressWallpaper({ width, height, timezone });
+  }
+
+  return generateDotWallpaper({ width, height, timezone });
+}
+
+async function generateDotWallpaper(options: {
+  width: number;
+  height: number;
+  timezone: string;
+}): Promise<Buffer> {
   const { width, height, timezone } = options;
 
   // Get current date in the specified timezone
@@ -48,8 +66,9 @@ export async function generateWallpaper(
   const verticalSpacing = dotRadius * dotSpacing * 2;
 
   // Calculate starting positions to center the grid within safe areas
-  const gridWidth = dotsPerRow * horizontalSpacing;
-  const gridHeight = totalRows * verticalSpacing;
+  // Grid width is from center of first dot to center of last dot, plus radius on each side
+  const gridWidth = (dotsPerRow - 1) * horizontalSpacing + 2 * dotRadius;
+  const gridHeight = (totalRows - 1) * verticalSpacing + 2 * dotRadius;
 
   // Center horizontally within left/right safe areas
   const startX = leftSafeArea + (availableWidth - gridWidth) / 2 + dotRadius;
@@ -83,6 +102,88 @@ export async function generateWallpaper(
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
       <rect width="${width}" height="${height}" fill="#000000"/>
       ${svgCircles}
+    </svg>
+  `;
+
+  // Convert SVG to PNG using sharp
+  const buffer = await sharp(Buffer.from(svg)).png().toBuffer();
+
+  return buffer;
+}
+
+async function generateHorizontalProgressWallpaper(options: {
+  width: number;
+  height: number;
+  timezone: string;
+}): Promise<Buffer> {
+  const { width, height, timezone } = options;
+
+  // Get current date in the specified timezone
+  const now = new Date();
+  const zonedDate = toZonedTime(now, timezone);
+  const currentDayOfYear = getDayOfYear(zonedDate);
+  const totalDays = isLeapYear(zonedDate) ? 366 : 365;
+
+  // Calculate safe areas for iOS lock screen
+  const topSafeArea = height * 0.25;
+  const bottomSafeArea = height * 0.12;
+  const leftSafeArea = width * 0.06;
+  const rightSafeArea = width * 0.06;
+
+  // Calculate available space within safe areas
+  const availableWidth = width - leftSafeArea - rightSafeArea;
+  const availableHeight = height - topSafeArea - bottomSafeArea;
+
+  // Progress bar configuration
+  const barHeight = Math.min(availableHeight * 0.15, 80); // Max 80px height
+  const barY = topSafeArea + (availableHeight - barHeight) / 2;
+  const barX = leftSafeArea;
+
+  // Calculate progress
+  const progressPercent = (currentDayOfYear / totalDays) * 100;
+  const progressWidth = (availableWidth * currentDayOfYear) / totalDays;
+
+  // Border configuration
+  const borderWidth = 3;
+
+  const svg = `
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background -->
+      <rect width="${width}" height="${height}" fill="#000000"/>
+
+      <!-- Progress bar background (black with white border) -->
+      <rect
+        x="${barX}"
+        y="${barY}"
+        width="${availableWidth}"
+        height="${barHeight}"
+        fill="#000000"
+        stroke="#FFFFFF"
+        stroke-width="${borderWidth}"
+      />
+
+      <!-- Progress fill (white) -->
+      <rect
+        x="${barX + borderWidth}"
+        y="${barY + borderWidth}"
+        width="${Math.max(0, progressWidth - borderWidth * 2)}"
+        height="${barHeight - borderWidth * 2}"
+        fill="#FFFFFF"
+      />
+
+      <!-- Percentage text in the middle -->
+      <text
+        x="${width / 2}"
+        y="${barY + barHeight / 2}"
+        font-family="Arial, sans-serif"
+        font-size="${Math.min(barHeight * 0.5, 36)}"
+        font-weight="bold"
+        fill="#FFFFFF"
+        text-anchor="middle"
+        dominant-baseline="central"
+      >
+        ${progressPercent.toFixed(1)}%
+      </text>
     </svg>
   `;
 
