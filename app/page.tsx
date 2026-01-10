@@ -1,5 +1,4 @@
-import WallpaperPreview from '@/components/WallpaperPreview';
-import ShortcutGuide from '@/components/ShortcutGuide';
+import WallpaperSection from '@/components/WallpaperSection';
 
 export default function Home() {
   return (
@@ -19,11 +18,8 @@ export default function Home() {
 
         {/* Main Content */}
         <div className="space-y-8 max-w-6xl mx-auto">
-          {/* Preview Section */}
-          <WallpaperPreview />
-
-          {/* Shortcuts Guide Section */}
-          <ShortcutGuide />
+          {/* Preview and Shortcuts Guide Sections */}
+          <WallpaperSection />
 
           {/* API Documentation */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">

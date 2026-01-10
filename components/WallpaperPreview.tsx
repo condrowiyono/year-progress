@@ -1,15 +1,26 @@
 "use client";
 
-import { useState } from "react";
+interface WallpaperPreviewProps {
+  timezone: string;
+  setTimezone: (timezone: string) => void;
+  width: number;
+  setWidth: (width: number) => void;
+  height: number;
+  setHeight: (height: number) => void;
+  mode: "dot" | "horizontal";
+  setMode: (mode: "dot" | "horizontal") => void;
+}
 
-export default function WallpaperPreview() {
-  const [timezone, setTimezone] = useState(() => {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone;
-  });
-  const [width, setWidth] = useState(1170);
-  const [height, setHeight] = useState(2532);
-  const [mode, setMode] = useState<"dot" | "horizontal">("dot");
-
+export default function WallpaperPreview({
+  timezone,
+  setTimezone,
+  width,
+  setWidth,
+  height,
+  setHeight,
+  mode,
+  setMode,
+}: WallpaperPreviewProps) {
   const previewUrl = `/api/wallpaper?width=${width}&height=${height}&timezone=${encodeURIComponent(
     timezone
   )}&mode=${mode}`;
@@ -157,12 +168,27 @@ export default function WallpaperPreview() {
               className="w-full h-auto"
             />
           </div>
-          <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono break-all w-full">
-            <p className="font-semibold mb-1 dark:text-gray-200">API URL:</p>
-            <code className="dark:text-gray-300">
-              {typeof window !== "undefined" ? window.location.origin : ""}
-              {previewUrl}
-            </code>
+          <div className="mt-4 w-full">
+            <div className="p-3 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono break-all">
+              <p className="font-semibold mb-1 dark:text-gray-200">API URL:</p>
+              <code className="dark:text-gray-300">
+                {typeof window !== "undefined" ? window.location.origin : ""}
+                {previewUrl}
+              </code>
+            </div>
+            <button
+              onClick={() =>
+                typeof navigator !== "undefined" &&
+                navigator.clipboard.writeText(
+                  `${
+                    typeof window !== "undefined" ? window.location.origin : ""
+                  }${previewUrl}`
+                )
+              }
+              className="mt-2 w-full px-4 py-2 bg-gray-800 dark:bg-gray-600 text-white rounded hover:bg-gray-700 dark:hover:bg-gray-500 transition text-sm"
+            >
+              Copy URL to Clipboard
+            </button>
           </div>
         </div>
       </div>
