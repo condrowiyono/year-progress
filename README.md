@@ -122,8 +122,8 @@ wallpaper-engine/
 
 1. **Date Calculation**: Uses the timezone parameter to determine the current date and day of year
 2. **iOS Lock Screen Safe Areas**: Automatically applies appropriate margins to avoid UI elements:
-   - Top safe area: 18% (for time/date display)
-   - Bottom safe area: 10% (for camera/flashlight buttons)
+   - Top safe area: 25% (for time/date display and widgets)
+   - Bottom safe area: 12% (for camera/flashlight buttons)
    - Left/Right safe areas: 6% each (general margins)
 3. **Dot Grid Layout**: Calculates a continuous grid layout within safe areas based on image dimensions
 4. **Color Coding**:

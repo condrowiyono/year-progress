@@ -20,11 +20,11 @@ export async function generateWallpaper(
   const totalDays = isLeapYear(zonedDate) ? 366 : 365;
 
   // Calculate safe areas for iOS lock screen
-  // Top safe area: ~18% for time/date display
-  // Bottom safe area: ~10% for camera/flashlight buttons
+  // Top safe area: ~25% for time/date display and widgets
+  // Bottom safe area: ~12% for camera/flashlight buttons
   // Left/Right safe areas: ~6% for general margins
-  const topSafeArea = height * 0.18;
-  const bottomSafeArea = height * 0.10;
+  const topSafeArea = height * 0.25;
+  const bottomSafeArea = height * 0.12;
   const leftSafeArea = width * 0.06;
   const rightSafeArea = width * 0.06;
 
