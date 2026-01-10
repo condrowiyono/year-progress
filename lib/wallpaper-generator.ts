@@ -171,16 +171,31 @@ async function generateHorizontalProgressWallpaper(options: {
         fill="#FFFFFF"
       />
 
-      <!-- Percentage text in the middle -->
+      <!-- Percentage text with white outline for visibility on all backgrounds -->
+      <!-- Outline (stroke) -->
       <text
         x="${width / 2}"
-        y="${barY + barHeight / 2}"
+        y="${barY + barHeight / 2 + Math.min(barHeight * 0.5, 36) / 3}"
         font-family="Arial, sans-serif"
         font-size="${Math.min(barHeight * 0.5, 36)}"
         font-weight="bold"
-        fill="#FFFFFF"
+        fill="none"
+        stroke="#FFFFFF"
+        stroke-width="3"
+        stroke-linejoin="round"
         text-anchor="middle"
-        dominant-baseline="central"
+      >
+        ${progressPercent.toFixed(1)}%
+      </text>
+      <!-- Fill (black text on top) -->
+      <text
+        x="${width / 2}"
+        y="${barY + barHeight / 2 + Math.min(barHeight * 0.5, 36) / 3}"
+        font-family="Arial, sans-serif"
+        font-size="${Math.min(barHeight * 0.5, 36)}"
+        font-weight="bold"
+        fill="#000000"
+        text-anchor="middle"
       >
         ${progressPercent.toFixed(1)}%
       </text>
