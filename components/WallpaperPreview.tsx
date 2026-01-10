@@ -14,11 +14,29 @@ export default function WallpaperPreview() {
   )}`;
 
   const presets = [
-    { name: "iPhone 14 Pro", width: 1179, height: 2556 },
+    // iPhone 16 Series (2024)
+    { name: "iPhone 16 Pro Max", width: 1320, height: 2868 },
+    { name: "iPhone 16 Pro", width: 1206, height: 2622 },
+    { name: "iPhone 16 Plus", width: 1290, height: 2796 },
+    { name: "iPhone 16", width: 1179, height: 2556 },
+
+    // iPhone 15 Series (2023)
+    { name: "iPhone 15 Pro Max", width: 1290, height: 2796 },
+    { name: "iPhone 15 Pro", width: 1179, height: 2556 },
+    { name: "iPhone 15 Plus", width: 1290, height: 2796 },
+    { name: "iPhone 15", width: 1179, height: 2556 },
+
+    // iPhone 14 Series (2022)
     { name: "iPhone 14 Pro Max", width: 1290, height: 2796 },
-    { name: "iPhone SE", width: 750, height: 1334 },
+    { name: "iPhone 14 Pro", width: 1179, height: 2556 },
+    { name: "iPhone 14 Plus", width: 1284, height: 2778 },
+    { name: "iPhone 14", width: 1170, height: 2532 },
+
+    // iPhone 13 Series (2021)
+    { name: "iPhone 13 Pro Max", width: 1284, height: 2778 },
+    { name: "iPhone 13 Pro", width: 1170, height: 2532 },
     { name: "iPhone 13", width: 1170, height: 2532 },
-    { name: "Custom", width: 1080, height: 1920 },
+    { name: "iPhone 13 mini", width: 1080, height: 2340 },
   ];
 
   return (

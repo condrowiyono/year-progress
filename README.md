@@ -136,11 +136,31 @@ wallpaper-engine/
 
 ### Device Presets
 
-The admin panel includes presets for common devices:
-- iPhone 14 Pro (1179x2556)
+The admin panel includes presets for iPhone 13-16 series:
+
+**iPhone 16 Series (2024):**
+- iPhone 16 Pro Max (1320x2868)
+- iPhone 16 Pro (1206x2622)
+- iPhone 16 Plus (1290x2796)
+- iPhone 16 (1179x2556)
+
+**iPhone 15 Series (2023):**
+- iPhone 15 Pro Max (1290x2796)
+- iPhone 15 Pro (1179x2556)
+- iPhone 15 Plus (1290x2796)
+- iPhone 15 (1179x2556)
+
+**iPhone 14 Series (2022):**
 - iPhone 14 Pro Max (1290x2796)
-- iPhone SE (750x1334)
+- iPhone 14 Pro (1179x2556)
+- iPhone 14 Plus (1284x2778)
+- iPhone 14 (1170x2532)
+
+**iPhone 13 Series (2021):**
+- iPhone 13 Pro Max (1284x2778)
+- iPhone 13 Pro (1170x2532)
 - iPhone 13 (1170x2532)
+- iPhone 13 mini (1080x2340)
 
 ### Adding More Query Parameters
 
