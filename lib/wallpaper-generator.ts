@@ -174,9 +174,11 @@ async function generateHorizontalProgressWallpaper(options: {
       <text
         x="${width / 2}"
         y="${barY + barHeight / 2 + Math.min(barHeight * 0.5, 36) / 3}"
+        font-family="Arial, sans-serif"
         font-size="${Math.min(barHeight * 0.5, 36)}"
         fill="#FFFFFF"
         text-anchor="middle"
+        dominant-baseline="middle"
       >
         ${progressPercent.toFixed(1)}%
       </text>
